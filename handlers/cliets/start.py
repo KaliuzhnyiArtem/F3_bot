@@ -75,9 +75,7 @@ async def group_message(message: types.Message, state: FSMContext):
 #Testing
 @dp.message_handler(lambda message: message.text == "1")
 async def one(message: types.Message, state: FSMContext):
-    ls = await get_planed_training_for_trainer(9, '2023-07-30')
-    for i in ls:
-        print(i)
+    pass
 
 
 

@@ -1,4 +1,5 @@
 from database.adm_client_db import get_trainer_name
+from database.search_client_db import get_info_client
 from database.workers_dp import get_trainer_full_name, get_trainer_list_active, get_trainer_id_by_tg_id, \
     get_trainer_tg_id_by_id
 
@@ -44,5 +45,24 @@ async def get_name_trainer(id_trainer: int):
         return f'{name} {second_name}'
     else:
         return 'не назначений'
+
+
+async def info_about_training(training_info) -> str:
+    """
+    Генерує текст з інформацією про тренування.
+    Відображається коли тренер переглядає список запланованих тренувань
+    """
+    if training_info:
+        client_info = await get_info_client(training_info[1])
+        name_client = client_info[0][1]
+        phone_client = client_info[0][3]
+        time_training = training_info[4]
+        text = f'Клієнт: {name_client}\n' \
+               f'Телефон: {phone_client}\n'\
+               f'Час тренування: {time_training}'
+        return text
+
+
+
 
 

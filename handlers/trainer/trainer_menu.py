@@ -1,6 +1,6 @@
 # Aiogram
 from database.msg_id_history_db import add_message_history, add_message_from_bot
-from database.training_history_db import get_planed_training_for_trainer
+from database.training_history_db import get_planed_training_for_trainer, chang_training_status
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -8,8 +8,10 @@ from aiogram.dispatcher import FSMContext
 # Database
 from other.calendar_other import get_current_mounth
 from other.func_other import decorator_check_trainer, dell_message, ent_in_menu_trainer, get_chois_data
-from keybords.trainer_menu import trainers_menu, r_back_to_trainer_menu
+from keybords.trainer_menu import trainers_menu, r_back_to_trainer_menu, be_or_not_be
 from other.help_other import calendar_for_trainer, go_left_or_right
+from other.trainer_other import get_traniner_id, info_about_training
+from other.trainer_training_other import training_list_for_treiner
 
 
 # Action to button back to main menu
@@ -61,26 +63,30 @@ async def testing_inline(callback: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(lambda callback: callback.data.startswith('trlist'))
 async def choise_day(callback: types.CallbackQuery, state: FSMContext):
+    """
+    Після вибора дати, виводить список всіх запланованих тренувань тренера
+    """
+    await training_list_for_treiner(callback, state)
 
-    msg = await callback.message.answer(f'Список тренувань', reply_markup=r_back_to_trainer_menu)
-    await dell_message(callback.from_user.id)
-    await add_message_from_bot(msg)
 
-    await state.update_data(choised_day=callback.data.split("-")[1])
+@dp.callback_query_handler(lambda callback: callback.data.startswith('happen'))
+async def happen(callback: types.CallbackQuery, state: FSMContext):
+    """
+    Якщо натиснута кнопка (Відбулось) статус тренування змінюється на 2 (Завершено)
+    """
+    id_training = callback.data.split('-')[1]
+    await chang_training_status(id_training, 2)
+    await training_list_for_treiner(callback, state)
 
-    cois_date = await get_chois_data(state)
 
-    ls_training = await get_planed_training_for_trainer(callback.from_user.id, cois_date)
-    print
-    if ls_training:
-        for training in ls_training:
-            msg = await callback.message.answer(training)
-            await add_message_from_bot(msg)
-
-    else:
-        await callback.message.answer(f'На {cois_date}\n'
-                                      f'Немає запланованих тренувань')
-        await add_message_from_bot(msg)
+@dp.callback_query_handler(lambda callback: callback.data.startswith('notheppen'))
+async def notheppen(callback: types.CallbackQuery, state: FSMContext):
+    """
+    Якщо натиснута кнопка (Відміна) статус тренування змінюється на 3 (Відмінено)
+    """
+    id_training = callback.data.split('-')[1]
+    await chang_training_status(id_training, 3)
+    await training_list_for_treiner(callback, state)
 
 
 

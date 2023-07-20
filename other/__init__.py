@@ -6,3 +6,4 @@ from . import client_other
 from . import user_other
 from . import system
 from . import freez_other
+from . import trainer_training_other

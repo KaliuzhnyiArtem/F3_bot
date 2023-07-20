@@ -13,5 +13,11 @@ async def find_client_by_id(tg_id):
     return cursor.fetchall()
 
 
+async def get_info_client(user_id: int):
+    cursor.execute(f"""SELECT * FROM users WHERE user_id={user_id}""")
+    return cursor.fetchall()
+
+
+
 
 

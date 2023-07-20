@@ -93,7 +93,7 @@ r_payment = ReplyKeyboardMarkup(resize_keyboard=True).add(b_payment).add(b_back_
 r_choise_work = ReplyKeyboardMarkup(resize_keyboard=True)
 b_choise_trainer = KeyboardButton('Тренер🏋️')
 b_chois_massaur = KeyboardButton('Масажист💆🏻')
-r_choise_work.add(b_choise_trainer, b_chois_massaur).add(b_back_to_menu)
+r_choise_work.add(b_choise_trainer).add(b_back_to_menu)
 
 
 

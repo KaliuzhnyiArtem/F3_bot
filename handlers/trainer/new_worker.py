@@ -12,9 +12,13 @@ from other.func_other import decorator_check_trainer, ent_in_menu, dell_message
 from other.system import sleep_time
 from state.reg import RegWorker
 
+
+
 @dp.message_handler(commands=['newworker'])
-async def trainer_menu(message: types.Message, state: FSMContext):
+async def new_worker_menu(message: types.Message, state: FSMContext):
+    print('Enterh in new worker')
     await add_message_history(message.from_user.id, message.message_id)
+
 
     if await check_worker(message.from_user.id, 4):
         msg = await message.answer(text='Заявка вже подана, очікуйде на рішення😊')

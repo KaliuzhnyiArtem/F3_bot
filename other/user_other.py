@@ -30,6 +30,7 @@ async def show_trainer_list(message: types.Message):
             await add_message_from_bot(msg)
     else:
         msg = await message.answer('😕Нажаль зараз немає активних тренерів')
+        await add_message_from_bot(msg)
 
 
 
