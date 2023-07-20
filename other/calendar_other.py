@@ -260,6 +260,25 @@ async def only_three_training(client_tg_id, chois_data, hours_table):
     return hours_table
 
 
+async def last_hour(hours_table, chois_data):
+    """
+    Ставить пусті кнопки на той час який вже пройшов
+    """
+    time_now = datetime.datetime.now().time()
+    date_todey = datetime.datetime.now().date()
+    chois_data = datetime.datetime.strptime(f'{chois_data}', '%Y-%m-%d').date()
+    if date_todey == chois_data:
+        for part_day in range(len(hours_table)):
+            for hour in range(len(hours_table[part_day])):
+
+                time_in_calendar = hours_table[part_day][hour]
+                time_in_datetime_format = datetime.datetime.strptime(f'{time_in_calendar}', "%H:%M").time()
+
+                if time_in_datetime_format < time_now:
+                    hours_table[part_day][hour] = None
+    return hours_table
+
+
 async def filter_hour_inline(client_tg_id: int, chois_data):
     """
     Фільтрує (редагує ) стандарний меню вибору часу.
@@ -269,6 +288,8 @@ async def filter_hour_inline(client_tg_id: int, chois_data):
     tp_trainnig = await type_trening(client_tg_id)
 
     hours_table = await generate_hours_table()
+
+    hours_table = await last_hour(hours_table, chois_data)
 
     if tp_trainnig == 'trial':
         hours_table = await only_one_training(client_tg_id, chois_data, hours_table)
