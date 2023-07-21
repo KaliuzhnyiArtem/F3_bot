@@ -4,7 +4,7 @@ from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-#Database
+# Database
 from database.msg_id_history_db import add_message_from_bot
 from database.workers_dp import update_worker_description
 
@@ -36,23 +36,23 @@ async def chois_worker(callback: types.CallbackQuery, state: FSMContext):
 
     trainer_info = await get_info_worker(telegram_id)
 
-    await state.update_data(telegram_worker_id=telegram_id)
+    await state.update_data(telegram_worker_id=telegram_id, trainer_photo=trainer_info[0][4])
 
     if trainer_info[0][4] is not None:
         msg1 = await callback.bot.send_photo(chat_id=callback.from_user.id, photo=trainer_info[0][4])
         await add_message_from_bot(msg1)
 
     msg = await callback.message.answer(text=f'Картка працівника\n'
-                                       f'ФІО: {trainer_info[0][1]} {trainer_info[0][2]}\n\n'
-                                       f'Статус: {status_trainer(trainer_info[0][5])}\n\n'
-                                       f'Опис: {trainer_info[0][6]}', reply_markup=r_menu_worker_card)
+                                             f'ФІО: {trainer_info[0][1]} {trainer_info[0][2]}\n\n'
+                                             f'Статус: {status_trainer(trainer_info[0][5])}\n\n'
+                                             f'Опис: {trainer_info[0][6]}', reply_markup=r_menu_worker_card)
 
     await add_message_from_bot(msg)
 
 
 @dp.message_handler(lambda message: message.text == "Змінити фото📷")
 @decorator_check_admin
-async def edit_list_workers(message: types.Message, state: FSMContext):
+async def edit_list_workers(message: types.Message):
 
     msg = await message.answer('Завантажте нове фото', reply_markup=r_back_to_menu_admin)
     await add_message_from_bot(msg)
@@ -72,7 +72,7 @@ async def get_photo(message: types.Message, state: FSMContext):
 
 @dp.message_handler(lambda message: message.text == "Змінити ФІО📔")
 @decorator_check_admin
-async def edit_list_workers(message: types.Message, state: FSMContext):
+async def edit_list_workers(message: types.Message):
 
     msg = await message.answer('Введідть нове Імя та Фамілію наприклад (Іван Стрілець). \n\n'
                                'Якщо плануєте змініти тільки фамілію або імя, всерівно пишіть імя та фамілію',
@@ -129,16 +129,24 @@ async def edit_tariner_status(message: types.Message, state: FSMContext):
 
     if message.text == 'Змінити на неактивний👎🏻':
         await update_status_worker(worker_tg_id["telegram_worker_id"], 2)
+        await well_done(message, state)
     elif message.text == 'Змінити на активний👍🏻':
-        await update_status_worker(worker_tg_id["telegram_worker_id"], 1)
 
-    await well_done(message, state)
+        if worker_tg_id["trainer_photo"]:
+            await update_status_worker(worker_tg_id["telegram_worker_id"], 1)
+            await well_done(message, state)
+        else:
+            msg = await message.answer(text='Не вдалось змінити статус.\n'
+                                            'У правцівника відсутня фотографія',
+                                       reply_markup=r_back_to_menu_admin)
+
+            await add_message_from_bot(msg)
 
 
 # Зміна опису тренера
 @dp.message_handler(lambda message: message.text == "Змінити опис📝")
 @decorator_check_admin
-async def edit_description_trainer(message: types.Message, state: FSMContext):
+async def edit_description_trainer(message: types.Message):
 
     msg = await message.answer(text='Відправте одним повідомленням новий текст про тренера',
                                reply_markup=r_back_to_menu_admin)
@@ -164,5 +172,3 @@ async def get_new_description(message: types.Message, state: FSMContext):
                                         'Будь ласка видаліть одинарні, подвійні дужки, косі лінії, крапки з комою',
                                    reply_markup=r_back_to_menu_admin)
         await add_message_from_bot(msg)
-
-

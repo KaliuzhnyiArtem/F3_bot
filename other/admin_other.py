@@ -68,7 +68,6 @@ async def answer_job_request_list(message):
         await add_message_from_bot(msg)
 
 
-
 # Отримуємо статус працівника по ід
 # (шукаємо в двох таблицях в тренерів та масажистів)
 async def get_status_worker(telegram_id):
@@ -107,21 +106,9 @@ async def check_worker(telegram_id, status):
         return False
 
 
-
-
-
-
 async def convert_corect_text(text) -> str:
     return text.replace("'", "\'")
 
 
 def get_client_id(callback):
     return callback.data.split('-')[1]
-
-
-
-
-
-
-
-
