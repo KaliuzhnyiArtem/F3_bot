@@ -123,7 +123,6 @@ async def info_client(message: types.Message):
 
 async def client_info_for_admin(tg_id_clint, client_info, trainer_name):
 
-
     info = f'Картка клієнта:\n\n'
     name = f'Імя: {client_info[1]}\n'
     phone = f'Телефон: {client_info[3]}\n'
@@ -149,9 +148,6 @@ async def client_info_for_admin(tg_id_clint, client_info, trainer_name):
     return info
 
 
-
-
-
 async def _trainer_name(tg_id: int):
     """Повертає імя фамілію тренере клієнта по ід"""
     trainer_id = await get_trainer_id_client(tg_id)
@@ -159,11 +155,11 @@ async def _trainer_name(tg_id: int):
 
 
 async def _memberships_info(tg_id):
-    '''
+    """
     Формує текст з інформацією про абонементи для особистого кабінета.
     :param tg_id:
     :return:
-    '''
+    """
 
     client_id = await get_client_id(tg_id)
     ls_member = await check_client_membership(client_id)
@@ -197,13 +193,24 @@ async def _memberships_info(tg_id):
         if client_abon[3]:
             by_abon_data = client_abon[3]
             activity_month = abot_info[0][1]
-            new_month = str(int((str(by_abon_data).split('-'))[1])+activity_month)
+            start_abon_manth = int((str(by_abon_data).split('-'))[1])
 
-            new_data = (str(by_abon_data).split('-'))
-            new_data[1] = new_month
-            new_data = '-'.join(new_data)
+            if start_abon_manth == 12:
+                new_month = '1'
+                new_data = (str(by_abon_data).split('-'))
+                new_data[0] = str(int(new_data[0])+1)
+                new_data[1] = new_month
+                new_data = '-'.join(new_data)
+                rez.append([abon_name, amount_training, new_data])
 
-        rez.append([abon_name, amount_training, new_data])
+            else:
+                new_month = str(start_abon_manth + activity_month)
+
+                new_data = (str(by_abon_data).split('-'))
+                new_data[1] = new_month
+                new_data = '-'.join(new_data)
+
+                rez.append([abon_name, amount_training, new_data])
 
     if rez:
         text = ''
@@ -236,10 +243,10 @@ async def _check_client_trainer(tg_id_client: int):
 
 
 async def count_freez_day(id_client_membership):
-    '''
+    """
     Повертає скількі дні абонемент клієнта був на паузі
     :return:
-    '''
+    """
     pass
 
 
@@ -252,19 +259,3 @@ async def def_check_start_date(id_client_membership, date_activate):
     client_membership = await check_client_membership_by_idabon(id_client_membership)
     if not client_membership[0][3]:
         await set_start_date_membership(id_client_membership, date_activate)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

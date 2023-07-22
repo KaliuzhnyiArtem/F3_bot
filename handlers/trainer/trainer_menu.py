@@ -1,6 +1,8 @@
 # Aiogram
+from database.client_membership_db import edit_membership_status, get_membership_status, update_status_if_cancelation
 from database.msg_id_history_db import add_message_history, add_message_from_bot
-from database.training_history_db import get_planed_training_for_trainer, chang_training_status
+from database.training_history_db import get_planed_training_for_trainer, chang_training_status, \
+    get_client_member_id_by_training_id
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -85,6 +87,9 @@ async def notheppen(callback: types.CallbackQuery, state: FSMContext):
     Якщо натиснута кнопка (Відміна) статус тренування змінюється на 3 (Відмінено)
     """
     id_training = callback.data.split('-')[1]
+
+    await update_status_if_cancelation(id_training)
+
     await chang_training_status(id_training, 3)
     await training_list_for_treiner(callback, state)
 

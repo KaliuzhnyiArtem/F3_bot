@@ -35,7 +35,32 @@ async def get_membershiop_id(client_abon_id: int):
 
 
 async def get_membership_status(client_abon_id):
+    """
+    Повертає статус абонемента клієнта по ід абонемента
+    """
     cursor.execute(f"""SELECT status_member FROM client_membership WHERE id={client_abon_id}""")
     return cursor.fetchall()
 
+
+async def update_status_if_cancelation(training_id):
+    """
+    Оновлює статус абонемента клієнта.
+    Коли тренер натискає відмінити тренування,
+    запрос перевіряє чи активний зараз абонемент до якого належить це тренвання,
+    Якщо не активний, то змінює статус на активний(1)
+    """
+    cursor.execute(f"""
+    UPDATE client_membership SET status_member=CASE
+        WHEN status_member=3 THEN
+        1
+        END
+    WHERE id= 
+        (SELECT id
+        FROM client_membership
+        WHERE id = 
+            (SELECT membership_id
+            FROM trainig_history
+            WHERE id = {training_id}));
+""")
+    dp_conn.commit()
 

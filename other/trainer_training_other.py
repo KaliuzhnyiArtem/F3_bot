@@ -12,6 +12,7 @@ async def training_list_for_treiner(callback, state):
     msg = await callback.message.answer(f'Список тренувань', reply_markup=r_back_to_trainer_menu)
     await dell_message(callback.from_user.id)
     await add_message_from_bot(msg)
+
     trainer_id = await get_traniner_id(callback.from_user.id)
 
     if callback.data.startswith('trlist'):
@@ -30,3 +31,4 @@ async def training_list_for_treiner(callback, state):
         msg = await callback.message.answer(f'На {cois_date}\n'
                                             f'Немає запланованих тренувань')
         await add_message_from_bot(msg)
+        
