@@ -188,7 +188,6 @@ async def serch_client(message: types.Message, state: FSMContext):
     await add_message_from_bot(msg)
 
 
-
 @dp.message_handler(lambda message: message.text == 'Видалити тренування🗑')
 @decorator_check_admin
 async def serch_client(message: types.Message, state: FSMContext):

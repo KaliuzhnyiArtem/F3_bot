@@ -31,4 +31,3 @@ async def training_list_for_treiner(callback, state):
         msg = await callback.message.answer(f'На {cois_date}\n'
                                             f'Немає запланованих тренувань')
         await add_message_from_bot(msg)
-        

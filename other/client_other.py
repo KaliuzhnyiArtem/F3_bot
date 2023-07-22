@@ -4,11 +4,13 @@ from database.memberships_db import check_client_trial_training, check_client_me
 from database.search_client_db import find_client_by_id
 from database.training_history_db import get_planed_training, get_planed_trial_training
 from database.user_db import get_id_trainer_client
+from other.freez_other import day_used
 from other.membership_othre import acces_count_training, count_training_history, \
     count_trial_training_history
 from aiogram import types
 
 from other.trainer_other import trainer_name
+from other.work_with_date_other import get_last_day_membersip
 
 
 async def get_client_id(telegram_id):
@@ -171,51 +173,37 @@ async def _memberships_info(tg_id):
 
         done_training = await count_trial_training_history(client_id)
         amount_training = f'({done_training}/1)'
-        by_abon_data = trial_training[0][2]
-        activity_month = 1
 
-        new_month = str(int((str(by_abon_data).split('-'))[1])+activity_month)
-
-        new_data = (str(by_abon_data).split('-'))
-        new_data[1] = new_month
-        new_data = '-'.join(new_data)
-
-        rez.append([abon_name, amount_training, new_data])
+        new_data = await get_last_day_membersip(start_date=trial_training[0][2],
+                                                activity_month=1,
+                                                freez_day=0)
+        rez.append(f"- {abon_name} {amount_training}\n дійсний до {new_data}\n\n")
 
     for client_abon in ls_member:
         abot_info = await info_membersips2(client_abon[2])
-        abon_name = abot_info[0][0]
+        used_freez_day = await day_used(client_abon[0])
+
+
+        if client_abon[4] == 2:
+            abon_name = abot_info[0][0]+"❄"
+        else:
+            abon_name = abot_info[0][0]
 
         done_training = await count_training_history(client_abon[0])
         amount_training = f'({done_training}/{abot_info[0][2]})'
 
-        new_data = ': Не активований'
         if client_abon[3]:
-            by_abon_data = client_abon[3]
-            activity_month = abot_info[0][1]
-            start_abon_manth = int((str(by_abon_data).split('-'))[1])
-
-            if start_abon_manth == 12:
-                new_month = '1'
-                new_data = (str(by_abon_data).split('-'))
-                new_data[0] = str(int(new_data[0])+1)
-                new_data[1] = new_month
-                new_data = '-'.join(new_data)
-                rez.append([abon_name, amount_training, new_data])
-
-            else:
-                new_month = str(start_abon_manth + activity_month)
-
-                new_data = (str(by_abon_data).split('-'))
-                new_data[1] = new_month
-                new_data = '-'.join(new_data)
-
-                rez.append([abon_name, amount_training, new_data])
+            new_data = await get_last_day_membersip(start_date=client_abon[3],
+                                                    activity_month=abot_info[0][1],
+                                                    freez_day=used_freez_day)
+            rez.append(f"- {abon_name} {amount_training}\n дійсний до {new_data}\n\n")
+        else:
+            rez.append(f'{abon_name} - активується після першого тренування\n\n')
 
     if rez:
         text = ''
         for abon in rez:
-            text += f"- {abon[0]} {abon[1]}\n дійсний до {abon[2]}\n\n"
+            text += abon
         return text
 
 

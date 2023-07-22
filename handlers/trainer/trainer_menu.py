@@ -1,8 +1,7 @@
 # Aiogram
-from database.client_membership_db import edit_membership_status, get_membership_status, update_status_if_cancelation
+from database.client_membership_db import update_status_if_cancelation
 from database.msg_id_history_db import add_message_history, add_message_from_bot
-from database.training_history_db import get_planed_training_for_trainer, chang_training_status, \
-    get_client_member_id_by_training_id
+from database.training_history_db import chang_training_status
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext

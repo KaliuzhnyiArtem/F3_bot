@@ -90,7 +90,7 @@ async def check_client_trial_training2(client_id: int):
 
 async def check_client_membership(client_id):
     cursor.execute(f"""SELECT * FROM client_membership 
-    WHERE client_id={client_id} and status_member=1
+    WHERE client_id={client_id} and (status_member=1 or status_member=2)
     ORDER BY id ASC""")
     return cursor.fetchall()
 
