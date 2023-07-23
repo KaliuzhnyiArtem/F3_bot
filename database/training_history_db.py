@@ -13,6 +13,11 @@ async def chang_training_status(id_training, training_status):
     dp_conn.commit()
 
 
+async def chang_trial_training_status(id_training, training_status):
+    cursor.execute(f"""UPDATE trial_trainig_history SET training_status={training_status} WHERE id={id_training}""")
+    dp_conn.commit()
+
+
 async def insert_new_trial_training(client_id, trainer_id, day, time_training):
     cursor.execute(f"""INSERT INTO trial_trainig_history (client_id, trainer_id, day, time_training, training_status) VALUES 
     ({client_id}, {trainer_id}, '{day}', '{time_training}', 1)""")
@@ -68,14 +73,31 @@ async def get_client_member_id_by_training_id(training_id):
     return cursor.fetchall()
 
 
-async def get_planed_training_for_trainer(trainer_id, cois_day):
-    '''
-    Повертає всі заплановані тренування , у вказаного тренера та дня
-    :return:
-    '''
-    cursor.execute(f"""SELECT * FROM trainig_history 
-    WHERE trainer_id={trainer_id} and training_status=1 and day='{cois_day}'
-    ORDER BY time_training""")
+async def get_all_planed_training(trainer_id: int, chois_day):
+    """
+    Повертає всі заплановані тренування, включаючи пробні
+    """
+    cursor.execute(f"""
+    SELECT id,
+           client_id,
+           time_training,
+           'trial'
+    FROM trial_trainig_history
+    WHERE trainer_id = {trainer_id}
+      AND DAY='{chois_day}'
+      AND training_status = 1
+    UNION ALL
+    SELECT id,
+           client_id,
+           time_training,
+           'ordinary'
+    FROM trainig_history
+    WHERE trainer_id = {trainer_id}
+      AND DAY='{chois_day}'
+      AND training_status = 1
+    ORDER BY time_training
+    """)
+
     return cursor.fetchall()
 
 

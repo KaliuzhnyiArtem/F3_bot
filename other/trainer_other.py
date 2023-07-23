@@ -52,12 +52,17 @@ async def info_about_training(training_info) -> str:
     Генерує текст з інформацією про тренування.
     Відображається коли тренер переглядає список запланованих тренувань
     """
+    text = ''
     if training_info:
         client_info = await get_info_client(training_info[1])
         name_client = client_info[0][1]
         phone_client = client_info[0][3]
-        time_training = training_info[4]
-        text = f'Клієнт: {name_client}\n' \
+        time_training = training_info[2]
+
+        if training_info[3] == 'trial':
+            text = '‼️Пробне тренування‼️\n\n'
+
+        text += f'Клієнт: {name_client}\n' \
                f'Телефон: {phone_client}\n'\
                f'Час тренування: {time_training}'
         return text

@@ -183,7 +183,6 @@ async def _memberships_info(tg_id):
         abot_info = await info_membersips2(client_abon[2])
         used_freez_day = await day_used(client_abon[0])
 
-
         if client_abon[4] == 2:
             abon_name = abot_info[0][0]+"❄"
         else:

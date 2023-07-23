@@ -158,7 +158,7 @@ class Startdb:
         client_id INT NOT NULL REFERENCES users(user_id),
         trainer_id INT NOT NULL REFERENCES trainers(trainer_id),
         day DATE NOT NULL,
-        time_training VARCHAR(50),
+        time_training TIME,
         training_status INT REFERENCES trainig_status(id)
         )""")
         self.dp_conn.commit()

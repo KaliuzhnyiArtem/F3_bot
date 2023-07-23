@@ -1,8 +1,6 @@
-from aiogram import types
 from datetime import datetime
 
 from database.frezz_db import get_ls_freez_by_id_member
-from database.memberships_db import info_membersips2
 
 
 def delta_day(start_date, end_date):
@@ -39,4 +37,3 @@ async def day_used(id_client_membership):
             sum_day += delta+1
 
     return sum_day
-

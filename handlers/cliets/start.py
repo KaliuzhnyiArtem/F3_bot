@@ -1,9 +1,6 @@
 # Aiogram
 from datetime import datetime
 
-from database.frezz_db import add_new_frezz, close_last_frezz, get_ls_freez_by_id_member
-from database.memberships_db import set_start_date_membership
-from database.training_history_db import dellete_training, get_planed_training_for_trainer
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -16,8 +13,6 @@ from database.testing_db import test_maling
 # Other
 import time
 
-from other.client_other import def_check_start_date
-from other.freez_other import delta_day, day_used
 from state.reg import Reg, Adm
 from handlers.shared import command_list
 from other.func_other import ent_in_menu, decorator_check_user

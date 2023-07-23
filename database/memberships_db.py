@@ -121,7 +121,7 @@ async def check_client_membership2(client_id):
 
 
 async def check_client_trial_history(client_id: int):
-    cursor.execute(f"""SELECT * FROM trial_trainig_history WHERE client_id={client_id}""")
+    cursor.execute(f"""SELECT * FROM trial_trainig_history WHERE client_id={client_id} AND training_status=1""")
     return cursor.fetchall()
 
 

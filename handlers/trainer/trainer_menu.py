@@ -1,7 +1,7 @@
 # Aiogram
-from database.client_membership_db import update_status_if_cancelation
+from database.client_membership_db import update_status_if_cancelation, update_status_trial_if_cancelation
 from database.msg_id_history_db import add_message_history, add_message_from_bot
-from database.training_history_db import chang_training_status
+from database.training_history_db import chang_training_status, chang_trial_training_status
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -12,7 +12,7 @@ from other.func_other import decorator_check_trainer, dell_message, ent_in_menu_
 from keybords.trainer_menu import trainers_menu, r_back_to_trainer_menu, be_or_not_be
 from other.help_other import calendar_for_trainer, go_left_or_right
 from other.trainer_other import get_traniner_id, info_about_training
-from other.trainer_training_other import training_list_for_treiner
+from other.trainer_training_other import training_list_for_treiner, cheng_training_status
 
 
 # Action to button back to main menu
@@ -76,7 +76,10 @@ async def happen(callback: types.CallbackQuery, state: FSMContext):
     Якщо натиснута кнопка (Відбулось) статус тренування змінюється на 2 (Завершено)
     """
     id_training = callback.data.split('-')[1]
-    await chang_training_status(id_training, 2)
+    type_training = callback.data.split('-')[2]
+
+    await cheng_training_status(type_training, 2, id_training)
+
     await training_list_for_treiner(callback, state)
 
 
@@ -86,10 +89,15 @@ async def notheppen(callback: types.CallbackQuery, state: FSMContext):
     Якщо натиснута кнопка (Відміна) статус тренування змінюється на 3 (Відмінено)
     """
     id_training = callback.data.split('-')[1]
+    type_training = callback.data.split('-')[2]
 
-    await update_status_if_cancelation(id_training)
+    if type_training == 'trial':
+        await update_status_trial_if_cancelation(id_training)
+    elif type_training == 'ordinary':
+        await update_status_if_cancelation(id_training)
 
-    await chang_training_status(id_training, 3)
+    await cheng_training_status(type_training, 3, id_training)
+
     await training_list_for_treiner(callback, state)
 
 
