@@ -2,6 +2,8 @@
 from database.client_membership_db import update_status_if_cancelation, update_status_trial_if_cancelation
 from database.msg_id_history_db import add_message_history, add_message_from_bot
 from database.training_history_db import chang_training_status, chang_trial_training_status
+from database.user_db import user_list_with_one_trainer
+from keybords.k_search_client import open_profile_for_trainer
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -35,7 +37,24 @@ async def trainer_menu(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Пошук по клієнтам🔍" )
 @decorator_check_trainer
 async def trainer_menu(message: types.Message, state: FSMContext):
-    print('Пошук по клієнтам')
+    users_list = await user_list_with_one_trainer(message.from_user.id)
+
+
+
+    if users_list:
+        msg = await message.answer("Оберіть клієнта", reply_markup=r_back_to_trainer_menu)
+        await add_message_from_bot(msg)
+        for user in users_list:
+            msg = await message.answer(f"Ім'я - {user[1]}\n"
+                                       f"Телефон - {user[3]}", reply_markup=await open_profile_for_trainer(user[4]))
+            await add_message_from_bot(msg)
+    else:
+        msg = await message.answer("У вас немає жодного клієнта", reply_markup=r_back_to_trainer_menu)
+        await add_message_from_bot(msg)
+
+
+
+
 
 
 @dp.message_handler(lambda message: message.text == "Календар тренувань📆" )

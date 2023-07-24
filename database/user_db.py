@@ -53,3 +53,18 @@ async def add_new_defolt_trainer(telegram_id: int, id_trainer: int):
     dp_conn.commit()
 
 
+async def user_list_with_one_trainer(trainer_tg_id):
+    """
+    Повертає список клєінтів з вказаним дефолтним тренером
+    Тренер фільтрується по телеграм ід
+    """
+    cursor.execute(f"""
+    SELECT *
+    FROM users
+    WHERE id_default_trainer=
+        (SELECT trainer_id
+         FROM trainers
+         WHERE telegram_id={trainer_tg_id});
+    """)
+    return cursor.fetchall()
+

@@ -1,25 +1,22 @@
-from aiogram.dispatcher import FSMContext
-
 from database.memberships_db import check_client_membership
 from database.msg_id_history_db import add_message_from_bot
 from database.training_history_db import insert_new_trial_training, insert_new_training
 from database.user_db import get_id_trainer_client
-from keybords.admin_menu import r_back_to_menu_admin
-from keybords.k_search_client import exeption_havnt_member, exeption_havnt_trainer
-
+from keybords.trainer_menu import r_back_to_trainer_menu
 from loader import dp, bot
 from aiogram import types
+from aiogram.dispatcher import FSMContext
 
 from other.calendar_other import get_current_mounth
-from other.client_other import _check_client_trainer, acces_choise_data_trainig, type_trening, get_client_id
-from other.func_other import decorator_check_admin, callback_ending, get_chois_data, dell_message, ent_in_menu_admin
+from other.client_other import _check_client_trainer, acces_choise_data_trainig, get_client_id, type_trening
+from other.func_other import decorator_check_trainer, callback_ending, get_chois_data, dell_message, ent_in_menu_trainer
 from other.help_other import training_calendar, go_left_or_right, hours_inline
 from other.membership_othre import check_amount_trial_training, check_amount_training
 from other.system import sleep_time
 
 
-@dp.message_handler(lambda message: message.text == 'Назначити тренування📌')
-@decorator_check_admin
+@dp.message_handler(lambda message: message.text == 'Назначити тренування🥳')
+@decorator_check_trainer
 async def serch_client(message: types.Message, state: FSMContext):
     client_id = (await state.get_data())['tg_client_id']
 
@@ -29,34 +26,34 @@ async def serch_client(message: types.Message, state: FSMContext):
             current_month = await get_current_mounth()
 
             current_calendar = await training_calendar(numb_month=current_month,
-                                                       command='admday',
+                                                       command='trainerday',
                                                        tg_id=client_id,
                                                        )
             msg = await message.answer('Оберіть день тренування🏋️', reply_markup=current_calendar)
             await add_message_from_bot(msg)
 
             msg = await message.answer('.',
-                                       reply_markup=r_back_to_menu_admin)
+                                       reply_markup=r_back_to_trainer_menu)
             await add_message_from_bot(msg)
 
             await state.update_data(last_month=current_month)
         else:
             msg = await message.answer('У клієнт відсутній активний абонемент\n\n',
-                                       reply_markup=exeption_havnt_member)
+                                       reply_markup=r_back_to_trainer_menu)
             await add_message_from_bot(msg)
     else:
         msg = await message.answer('За клієнтом не закріплений тренер\n\n',
-                                   reply_markup=exeption_havnt_trainer)
+                                   reply_markup=r_back_to_trainer_menu)
         await add_message_from_bot(msg)
 
 
-@dp.callback_query_handler(lambda callback: callback.data.startswith('go-admday'))
+@dp.callback_query_handler(lambda callback: callback.data.startswith('go-trainerday'))
 async def testing_inline(callback: types.CallbackQuery, state: FSMContext):
     tg_client_id = (await state.get_data())['tg_client_id']
-    await go_left_or_right(callback, state, 'admday', tg_client_id, "training")
+    await go_left_or_right(callback, state, 'trainerday', tg_client_id, "training")
 
 
-@dp.callback_query_handler(lambda callback: callback.data.startswith('admday'))
+@dp.callback_query_handler(lambda callback: callback.data.startswith('trainerday'))
 async def choise_day(callback: types.CallbackQuery, state: FSMContext):
     tg_client_id = (await state.get_data())['tg_client_id']
     await state.update_data(choised_day=await callback_ending(callback))
@@ -64,17 +61,17 @@ async def choise_day(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer('Дата обрана✅')
 
     msg = await callback.message.answer(text=f'Оберіть час тренування🏋️',
-                                        reply_markup=await hours_inline(tg_client_id, chois_data, place='adm'))
+                                        reply_markup=await hours_inline(tg_client_id, chois_data, place='trai'))
 
     await dell_message(callback.from_user.id)
     await add_message_from_bot(msg)
 
     msg = await callback.message.answer('.',
-                                        reply_markup=r_back_to_menu_admin)
+                                        reply_markup=r_back_to_trainer_menu)
     await add_message_from_bot(msg)
 
 
-@dp.callback_query_handler(lambda callback: callback.data.startswith('houradm'))
+@dp.callback_query_handler(lambda callback: callback.data.startswith('hourtrai'))
 async def choise_hour(callback: types.CallbackQuery, state: FSMContext):
     tg_client_id = (await state.get_data())['tg_client_id']
 
@@ -110,4 +107,4 @@ async def choise_hour(callback: types.CallbackQuery, state: FSMContext):
         await add_message_from_bot(msg)
 
     await sleep_time(3)
-    await ent_in_menu_admin(callback.from_user.id)
+    await ent_in_menu_trainer(callback.from_user.id)

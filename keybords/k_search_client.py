@@ -7,6 +7,11 @@ async def open_profile(tg_id):
     return InlineKeyboardMarkup().add(r_open_profile)
 
 
+async def open_profile_for_trainer(tg_id):
+    r_open_profile = InlineKeyboardButton('Відкрити профіль', callback_data=f'trainerclient-{tg_id}')
+    return InlineKeyboardMarkup().add(r_open_profile)
+
+
 # Меню при вході картку клієнта
 r_client_card = ReplyKeyboardMarkup(resize_keyboard=True)
 b_edit_info = KeyboardButton('Редагувати данні клієнта📝')

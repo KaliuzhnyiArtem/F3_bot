@@ -96,7 +96,8 @@ async def check_client_membership(client_id):
 
 
 async def check_client_membership_by_idabon(id_client_member):
-    cursor.execute(f"""SELECT * FROM client_membership WHERE id={id_client_member} and status_member=1""")
+    cursor.execute(f"""SELECT * FROM client_membership 
+    WHERE id={id_client_member} and (status_member=1 OR status_member=2)""")
     return cursor.fetchall()
 
 
