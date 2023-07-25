@@ -1,6 +1,6 @@
 from database.memberships_db import check_client_trial_training, check_client_membership, check_client_trial_history, \
     info_membersips2, check_client_membership2, check_client_trial_training2, set_start_date_membership, \
-    check_client_membership_by_idabon
+    check_client_membership_by_idabon, check_client_membership_for_acces
 from database.search_client_db import find_client_by_id
 from database.training_history_db import get_planed_training, get_planed_trial_training
 from database.user_db import get_id_trainer_client
@@ -66,7 +66,7 @@ async def acces_choise_data_trainig(telegram_id):
     client_id = await find_client_by_id(telegram_id)
     if client_id:
         client_id = client_id[0][0]
-        if await check_client_membership(client_id) \
+        if await check_client_membership_for_acces(client_id) \
                 and await acces_count_training(telegram_id):
             return True
         elif await check_client_trial_training(client_id) and not await check_client_trial_history(client_id):

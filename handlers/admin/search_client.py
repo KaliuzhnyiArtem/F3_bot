@@ -171,7 +171,6 @@ async def open_client_info(callback: types.CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(lambda callback: callback.data.startswith('freez_off'))
 async def open_client_info(callback: types.CallbackQuery, state: FSMContext):
     membership_id = callback.data.split("-")[1]
-    print(membership_id)
     await edit_membership_status(client_abon_id=membership_id,
                                  status=1)
 

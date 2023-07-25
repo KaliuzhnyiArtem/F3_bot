@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 
 # Database
 from database.msg_id_history_db import add_message_from_bot
-from database.memberships_db import check_client_membership
+from database.memberships_db import check_client_membership, check_client_membership_for_acces
 from database.training_history_db import insert_new_training, insert_new_trial_training
 from database.user_db import get_id_trainer_client
 
@@ -94,7 +94,7 @@ async def choise_hour(callback: types.CallbackQuery, state: FSMContext):
     tp_trainnig = await type_trening(callback.from_user.id)
 
     if client_id != 0 and id_trainer:
-        membership_id = await check_client_membership(client_id)
+        membership_id = await check_client_membership_for_acces(client_id)
 
         if tp_trainnig == 'trial':
             await insert_new_trial_training(client_id, id_trainer[0][0], chois_data, training_data['choised_hour'])
@@ -107,7 +107,6 @@ async def choise_hour(callback: types.CallbackQuery, state: FSMContext):
 
                 await def_check_start_date(membership_id[0][0], chois_data)
                 await check_amount_training(callback.from_user.id)
-
 
         msg = await callback.message.answer(text=f"Тренування заброньоване ✅\n"
                                                  f"{chois_data}\n"

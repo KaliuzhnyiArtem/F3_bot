@@ -305,7 +305,7 @@ async def filter_calendar_for_trainer(year, month):
     '''
 
     calendar_list = await generate_weeks(year, month)
-    calendar_list = await _days_done(calendar_list, month)
+    # calendar_list = await _days_done(calendar_list, month)
 
     return calendar_list
 
