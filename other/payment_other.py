@@ -14,7 +14,6 @@ async def payment_membersip(message, state: FSMContext):
     :param message:
     :return:
     """
-    current_data = str(datetime.now().date())
     client_id = get_data_from_fetchall(await get_client_id(message.from_user.id))
     membership_id = (await state.get_data())['id_membersip']
 

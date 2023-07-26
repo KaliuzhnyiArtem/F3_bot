@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 async def get_last_day_membersip(start_date, activity_month, freez_day):

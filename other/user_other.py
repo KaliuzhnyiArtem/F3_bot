@@ -1,5 +1,4 @@
 from keybords.admin_menu import generate_chois_worker
-from loader import dp
 from aiogram import types
 
 # Database

@@ -5,9 +5,6 @@ from database.training_history_db import amount_training, get_planed_trial_train
 from database.user_db import get_client_id
 
 
-
-
-
 def get_from_fetchall(value):
     if value:
         return value[0][0]
@@ -31,6 +28,7 @@ async def membership_id(user_member_id):
     else:
         return None
 
+
 async def count_training_history(user_member_id):
     """
     Повертає кількість тренувань, з історїї тренувань. по заданому абонементу клієнта
@@ -47,7 +45,7 @@ async def count_training_history(user_member_id):
 async def count_trial_training_history(client_id):
     """
     Повертає кількість тренувань, з історїї тренувань. по заданому абонементу клієнта
-    :param user_member_id:
+    :param client_id:
     :return:
     """
     value = await get_planed_trial_training(client_id)
@@ -101,12 +99,3 @@ async def check_amount_trial_training(client_id: int):
 async def check_start_date_membership():
     membership = await check_client_membership()
     return membership
-
-
-
-
-
-
-
-
-

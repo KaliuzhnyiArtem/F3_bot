@@ -63,11 +63,6 @@ async def info_about_training(training_info) -> str:
             text = '‼️Пробне тренування‼️\n\n'
 
         text += f'Клієнт: {name_client}\n' \
-               f'Телефон: {phone_client}\n'\
-               f'Час тренування: {time_training}'
+                f'Телефон: {phone_client}\n'\
+                f'Час тренування: {time_training}'
         return text
-
-
-
-
-
