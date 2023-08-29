@@ -5,3 +5,4 @@ from . import search_client
 from . import edit_clietn_info
 from . import weekends
 from . import add_training
+from . import sending_message

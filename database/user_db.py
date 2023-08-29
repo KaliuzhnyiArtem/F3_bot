@@ -68,3 +68,11 @@ async def user_list_with_one_trainer(trainer_tg_id):
     """)
     return cursor.fetchall()
 
+
+async def get_tg_id_all_client():
+    """
+    Отримуємо тг ід всіх клієнтів, використовується для розсилки повідомлень
+    """
+    cursor.execute(f"""SELECT telegram_id FROM users""")
+    return cursor.fetchall()
+

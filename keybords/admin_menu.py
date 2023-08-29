@@ -38,6 +38,16 @@ r_edit_list_workers.add(b_add_new_worker).add(b_dissmis_worker).add(b_back_menu_
 e_edit_workers_info = ReplyKeyboardMarkup(resize_keyboard=True).add(b_back_menu_admin)
 
 
+# Menu send email
+r_send_email = ReplyKeyboardMarkup(resize_keyboard=True)
+b_send_all_client = KeyboardButton('Розсилка повідомлень всім клієнтам')
+r_send_email.add(b_send_all_client).add(b_back_menu_admin)
+
+r_ready_text = ReplyKeyboardMarkup(resize_keyboard=True)
+b_ready_text = KeyboardButton('Розіслати повідомленння')
+r_ready_text.add(b_ready_text).add(b_back_menu_admin)
+
+
 # Кнопки які використовуються при редагуванні та звільненні працівників
 async def generate_chois_worker(telegram_id: int, comand: str):
     """

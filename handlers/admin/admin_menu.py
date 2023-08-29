@@ -8,8 +8,9 @@ from other.func_other import decorator_check_admin, ent_in_menu_admin, dell_mess
 from database.msg_id_history_db import add_message_from_bot, add_message_history
 
 #Other
-from keybords.admin_menu import r_admin_menu, r_control_workers
+from keybords.admin_menu import r_admin_menu, r_control_workers, r_send_email
 from state.reg import Card, SerachClient, ClientCard
+from state.send_main import SendMessage
 
 
 # Для отримання телеграм ід юзера
@@ -41,6 +42,8 @@ async def beck_to_main_menu(message: types.Message, state: FSMContext):
                            Card.getdescription,
                            SerachClient,
                            ClientCard,
+                           SendMessage.wait_message_text,
+                           SendMessage.text_ready,
                            ])
 @decorator_check_admin
 async def beck_to_main_menu(message: types.Message, state: FSMContext):
@@ -59,6 +62,15 @@ async def admin_menu(message: types.Message):
 @decorator_check_admin
 async def control_workers(message: types.Message):
     msg = await message.answer('Управління персоналом👷🏻‍♂️', reply_markup=r_control_workers)
+
+    await dell_message(message.from_user.id)
+    await add_message_from_bot(msg)
+
+
+@dp.message_handler(lambda message: message.text == 'Розсилка повідомлень📩')
+@decorator_check_admin
+async def send_messg(message: types.Message):
+    msg = await message.answer('Розсилка повідомлень📩', reply_markup=r_send_email)
 
     await dell_message(message.from_user.id)
     await add_message_from_bot(msg)
