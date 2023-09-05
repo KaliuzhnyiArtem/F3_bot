@@ -1,9 +1,11 @@
 # Aiogram
 from datetime import datetime
 
-from loader import dp, bot
+from loader import dp, bot, scheduler
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from handlers.system_handlers.apsched import send_message_interval
 
 # Database
 from database.user_db import insert_new_user
@@ -46,8 +48,6 @@ async def regusers(message: types.Message, state: FSMContext):
     await ent_in_menu(message.from_user.id)
 
 
-
-
 # Detect unregistered commands
 @dp.message_handler(lambda message: message.text not in command_list)
 async def one(message: types.Message):
@@ -70,7 +70,8 @@ async def group_message(message: types.Message, state: FSMContext):
 #Testing
 @dp.message_handler(lambda message: message.text == "1")
 async def one(message: types.Message, state: FSMContext):
-    pass
+    scheduler.add_job(send_message_interval, trigger='interval', seconds=2,
+                      kwargs={'bot': bot, 'chat_id': message.from_user.id})
 
 
 

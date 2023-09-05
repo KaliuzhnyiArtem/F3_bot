@@ -1,4 +1,5 @@
 # Aiogram
+from database.workers_dp import get_trainer_tg_id_by_id
 from loader import dp, bot
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -89,6 +90,8 @@ async def choise_hour(callback: types.CallbackQuery, state: FSMContext):
     chois_data = await get_chois_data(state)
 
     id_trainer = await get_id_trainer_client(callback.from_user.id)
+    tgid_trainer = await get_trainer_tg_id_by_id(id_trainer[0][0])
+
     client_id = await get_client_id(callback.from_user.id)
 
     tp_trainnig = await type_trening(callback.from_user.id)
@@ -115,6 +118,10 @@ async def choise_hour(callback: types.CallbackQuery, state: FSMContext):
         await dell_message(callback.from_user.id)
         await add_message_from_bot(msg)
 
+        msg = await bot.send_message(chat_id=tgid_trainer[0][0], text=f'Назначене нове тренування🥳\n'
+                                                                      f'Дата: {chois_data}\n'
+                                                                      f"Час: {training_data['choised_hour']}")
+        await add_message_from_bot(msg)
 
 
     await sleep_time(3)
