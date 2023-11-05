@@ -19,8 +19,7 @@ async def on_startup(_):
     #                   run_date=datetime.now() + timedelta(seconds=1),
     #                   kwargs={'bot': bot})
 
-    # scheduler.add_job(apsched.send_message_interval, trigger='interval', seconds=0.5,
-    #                   kwargs={'bot': bot})
+
 
     # scheduler.start()
     # scheduler.add_job(apsched.send_message_cron, trigger='cron',

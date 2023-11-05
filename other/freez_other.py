@@ -37,3 +37,6 @@ async def day_used(id_client_membership):
             sum_day += delta+1
 
     return sum_day
+
+
+
