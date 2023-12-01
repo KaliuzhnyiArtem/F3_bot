@@ -39,5 +39,16 @@ async def get_ls_freez_by_id_member(id_client_membership):
     return cursor.fetchall()
 
 
+async def get_all_freez_member():
+    """
+    Отримуємо список всіх заморожених обенементів,
+    без кінцевої дати (заморозка триває ще не завершилась)
+
+    Returns:
+    """
+    cursor.execute(f"""SELECT * FROM frezz WHERE finish_date IS NULL""")
+    return cursor.fetchall()
+
+
 
 

@@ -86,3 +86,4 @@ async def update_status_trial_if_cancelation(training_id):
 """)
     dp_conn.commit()
 
+

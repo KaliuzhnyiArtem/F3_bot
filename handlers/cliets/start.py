@@ -11,10 +11,12 @@ from handlers.system_handlers.apsched import send_message_interval
 from database.user_db import insert_new_user
 from database.msg_id_history_db import add_message_history, add_message_from_bot, amount_user_messages
 from database.testing_db import test_maling
+from database.frezz_db import get_all_freez_member
 
 # Other
 import time
 
+from other.freez_other import day_used
 from state.reg import Reg, Adm
 from handlers.shared import command_list
 from other.func_other import ent_in_menu, decorator_check_user
@@ -70,14 +72,17 @@ async def group_message(message: types.Message, state: FSMContext):
 #Testing
 @dp.message_handler(lambda message: message.text == "1")
 async def one(message: types.Message, state: FSMContext):
-    scheduler.add_job(send_message_interval, trigger='interval', seconds=2,
-                      kwargs={'bot': bot, 'chat_id': message.from_user.id})
-
+    pass
+    # scheduler.add_job(send_message_interval, trigger='interval', seconds=2,
+    #                   kwargs={'bot': bot, 'chat_id': message.from_user.id})
 
 
 @dp.message_handler(lambda message: message.text == "2")
 async def two(message: types.Message, state: FSMContext):
     pass
+
+
+
 
 
 
