@@ -57,8 +57,9 @@ b_time_work = KeyboardButton('Графік роботи')
 b_price = KeyboardButton('Ціни')
 b_location = KeyboardButton('Де ви знаходитесь?')
 b_write_admin = KeyboardButton("Зв'язатися з адміністратором")
+b_pravova_information = KeyboardButton("Правова інформація")
 b_beck_menu = KeyboardButton('↩️ Головне меню')
-r_supprot.add(b_first_treinig).add(b_fredom_visit).add(b_group_treinig).add(b_streching).add(b_location).add(b_time_work, b_price)\
+r_supprot.add(b_first_treinig).add(b_fredom_visit).add(b_group_treinig).add(b_streching).add(b_location, b_price).add(b_time_work, b_pravova_information)\
     .add(b_write_admin, b_beck_menu)
 
 

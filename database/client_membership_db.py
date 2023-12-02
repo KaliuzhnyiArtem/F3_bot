@@ -87,3 +87,9 @@ async def update_status_trial_if_cancelation(training_id):
     dp_conn.commit()
 
 
+async def get_all_active_memberhip():
+    cursor.execute(f"""SELECT * FROM client_membership WHERE status_member=1 AND start_day IS NOT NULL""")
+    return cursor.fetchall()
+
+
+

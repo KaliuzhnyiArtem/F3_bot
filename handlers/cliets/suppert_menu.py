@@ -111,3 +111,17 @@ async def location(message: types.Message):
                                "Пишіть в телеграм: @F3fitness", reply_markup=r_back_to_menu)
 
     await add_message_from_bot(msg)
+
+
+@dp.message_handler(lambda message: message.text == 'Правова інформація')
+@decorator_check_user
+async def pravova_information(message: types.Message):
+    msg1 = await message.answer_document('BQACAgIAAxkBAAJcEmVrgOty-sEhRWbGjlpmkFRL38D7AAKQOwACtfFZS4uoM3x3uVJaMwQ')
+    msg2 = await message.answer_document('BQACAgIAAxkBAAJcE2VrgRzMSmMmGPkmGsG1gS0EMnxSAAKWOwACtfFZS9nc6bs4WasAATME')
+    msg3 = await message.answer_document('BQACAgIAAxkBAAJcFGVrgT6e1qTsgbzr7YfxkI1eptEVAAKjOwACtfFZS9UvPjMCJGXhMwQ')
+    msg4 = await message.answer_document('BQACAgIAAxkBAAJcHWVrj0HS8wHq4I_rEEGVxHLAKGGBAAIMNQACtfFhS-awc_AQQf-YMwQ', reply_markup=r_back_to_menu)
+
+    await add_message_from_bot(msg1)
+    await add_message_from_bot(msg2)
+    await add_message_from_bot(msg3)
+    await add_message_from_bot(msg4)

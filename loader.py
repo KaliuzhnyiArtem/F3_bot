@@ -13,13 +13,14 @@ dp = Dispatcher(bot, storage=storage)
 
 scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
 
-
-# scheduler.add_job(apsched.freez_cheecking, trigger='interval', seconds=1.5,
-#                   kwargs={'bot': bot, 'chat_id': 1470039104})
-
 # Виклик перевірки заморожених обонементів чи не заморожені вони
-scheduler.add_job(apsched.send_message_cron, trigger='cron', hour=2, minute=2, start_date=datetime.now(),
+scheduler.add_job(apsched.check_freez_membership, trigger='cron', hour=23, minute=23, start_date=datetime.now(),
                   kwargs={'bot': bot})
+
+# Виклик перевірки терміну придатності абонементів
+scheduler.add_job(apsched.check_timeout_membership, trigger='cron', hour=23, minute=44, start_date=datetime.now(),
+                  kwargs={'bot': bot})
+
 scheduler.start()
 
 

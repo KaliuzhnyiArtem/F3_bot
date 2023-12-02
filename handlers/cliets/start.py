@@ -1,6 +1,7 @@
 # Aiogram
 from datetime import datetime
 
+from database.client_membership_db import get_all_active_memberhip
 from loader import dp, bot, scheduler
 from aiogram import types
 from aiogram.dispatcher import FSMContext
@@ -69,17 +70,19 @@ async def group_message(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-#Testing
-@dp.message_handler(lambda message: message.text == "1")
-async def one(message: types.Message, state: FSMContext):
-    pass
-    # scheduler.add_job(send_message_interval, trigger='interval', seconds=2,
-    #                   kwargs={'bot': bot, 'chat_id': message.from_user.id})
-
-
-@dp.message_handler(lambda message: message.text == "2")
-async def two(message: types.Message, state: FSMContext):
-    pass
+# #Testing
+# @dp.message_handler(lambda message: message.text == "1")
+# async def one(message: types.Message, state: FSMContext):
+#     await message.answer_document('BQACAgIAAxkBAAJcEmVrgOty-sEhRWbGjlpmkFRL38D7AAKQOwACtfFZS4uoM3x3uVJaMwQ')
+#     await message.answer_document('BQACAgIAAxkBAAJcE2VrgRzMSmMmGPkmGsG1gS0EMnxSAAKWOwACtfFZS9nc6bs4WasAATME')
+#     await message.answer_document('BQACAgIAAxkBAAJcFGVrgT6e1qTsgbzr7YfxkI1eptEVAAKjOwACtfFZS9UvPjMCJGXhMwQ')
+#
+# #
+# #
+# @dp.message_handler(content_types=['document'])
+# async def two(message: types.Message, state: FSMContext):
+#     document = message.document.file_id
+#     print(document)
 
 
 
