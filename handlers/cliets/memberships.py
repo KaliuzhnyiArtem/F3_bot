@@ -26,7 +26,7 @@ async def action_member_inline(c: types.CallbackQuery, state: FSMContext):
         msg = await bot.send_message(c.from_user.id,
                                      f'💳Абонемент: {memberships_info[1]}\n\n'
                                      f'🏋🏻Перелік послуг:\n'
-                                     f'- {memberships_info[4]} тренування з тренером\n'
+                                     f'- {memberships_info[4]} тренуваннь з тренером\n'
                                      f'- рекомендації по раціону харчування від дієтолога\n'
                                      f'- контроль харчування дієтологом\n'
                                      f'- заміри параметрів тіла раз на тиждень\n'
@@ -42,7 +42,7 @@ async def action_member_inline(c: types.CallbackQuery, state: FSMContext):
         msg = await bot.send_message(c.from_user.id,
                                      f'💳Абонемент: {memberships_info[1]}\n\n'
                                      f'🏋🏻Перелік послуг:\n'
-                                     f'- {memberships_info[4]} тренування з тренером\n\n'
+                                     f'- {memberships_info[4]} тренуваннь з тренером\n\n'
                                      f'⏳Термін дії - {memberships_info[3]} місяць\n\n'
                                      f'▪️Ціна: {memberships_info[2]} грн',
                                      reply_markup=r_back_to_menu,
