@@ -17,14 +17,18 @@ async def add_message_from_bot(msg):
 
 # SELECT message history list
 async def get_message_history(user_id: int) -> list:
-    cursor.execute(f"""SELECT message_id FROM message_id_history WHERE user_id={user_id}""")
-    return cursor.fetchall()
+    with dp_conn:
+        with dp_conn.cursor() as curs:
+            curs.execute(f"""SELECT message_id FROM message_id_history WHERE user_id={user_id}""")
+            return curs.fetchall()
 
 
 # DELETE message_id from message_history
 async def dell_message_id(message_id: int):
-    cursor.execute(f"""DELETE FROM message_id_history WHERE message_id={message_id}""")
-    dp_conn.commit()
+    with dp_conn:
+        with dp_conn.cursor() as curs:
+            curs.execute(f"""DELETE FROM message_id_history WHERE message_id={message_id}""")
+            dp_conn.commit()
 
 
 # amount user message in message_history
